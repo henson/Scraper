@@ -1,6 +1,6 @@
 # Scraper
 
-We scrape the github trending page of these languages: go, python, javascript, swift, objective-c, ruby, and push a markdown result everyday.
+Every day, Scraper scrapes the GitHub trending pages for several languages and pushes a markdown result. Scraper supports Go, Python, JavaScript, Swift, Objective-C, and Ruby.
 
 [2019-03-07.md](https://github.com/henson/Scraper/blob/master/2019-03-07.md)
 
