@@ -228,11 +228,11 @@ func scrape(jobs chan string, backs chan<- string) {
 			panic(language)
 		}
 
-		doc.Find("ol.repo-list li").Each(func(i int, s *goquery.Selection) {
-			title := s.Find("h3 a").Text()
+		doc.Find(".Box-row").Each(func(i int, s *goquery.Selection) {
+			title := s.Find("h1 > a").Text()
+			title = strings.Replace(strings.TrimSpace(title), " ", "", -1)
 			description := s.Find("p.col-9").Text()
-			url, _ := s.Find("h3 a").Attr("href")
-			url = "https://github.com" + url
+			url := "https://github.com/" + title
 			var stars = "0"
 			var forks = "0"
 			s.Find("a.muted-link.mr-3").Each(func(i int, contentSelection *goquery.Selection) {
@@ -245,7 +245,7 @@ func scrape(jobs chan string, backs chan<- string) {
 					}
 				}
 			})
-			result = result + "* [" + strings.Replace(strings.TrimSpace(title), " ", "", -1) + " (" + strings.TrimSpace(stars) + "s/" + strings.TrimSpace(forks) + "f)](" + url + ") : " + strings.TrimSpace(description) + "\n"
+			result = result + "* [" + title + " (" + strings.TrimSpace(stars) + "s/" + strings.TrimSpace(forks) + "f)](" + url + ") : " + strings.TrimSpace(description) + "\n"
 		})
 		println(language + " is responsed to backs.")
 		backs <- result
