@@ -62,7 +62,7 @@ func main() {
 			}
 		}
 		//set monitor targets
-		targets := []string{"go", "python", "javascript", "swift", "objective-c", "ruby"}
+		targets := []string{"go", "python", "javascript", "swift", "html", "ruby"}
 
 		var content, readme string
 		jobs := make(chan string, 10)
