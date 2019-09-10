@@ -231,6 +231,7 @@ func scrape(jobs chan string, backs chan<- string) {
 		doc.Find(".Box-row").Each(func(i int, s *goquery.Selection) {
 			title := s.Find("h1 > a").Text()
 			title = strings.Replace(strings.TrimSpace(title), " ", "", -1)
+			title = strings.Replace(title, "\n", "", -1)
 			description := s.Find("p.col-9").Text()
 			url := "https://github.com/" + title
 			var stars = "0"
