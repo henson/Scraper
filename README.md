@@ -2,6 +2,6 @@
 
 We scrape the github trending page of these languages: go, python, javascript, swift, html, ruby, and push a markdown result everyday.
 
-[2020-08-08.md](https://github.com/henson/Scraper/blob/master/2020-08-08.md)
+[2020-08-09.md](https://github.com/henson/Scraper/blob/master/2020-08-09.md)
 
-Last Updated: 2020-08-08 08:59:37
+Last Updated: 2020-08-09 08:59:49
