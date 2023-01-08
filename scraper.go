@@ -22,7 +22,7 @@ type Alert struct {
 	Title, Content, URL, Priority, Source, Receiver string
 }
 
-//SendAlert to send notification
+// SendAlert to send notification
 func (a *Alert) SendAlert() {
 	defer func() {
 		if r := recover(); r != nil {
@@ -104,22 +104,27 @@ func main() {
 		gitCommit()
 		gitPush()
 
-		alert := Alert{
-			Source:   "s-4e12c729-0a0c-4491-bd1a-107de60e",
-			Receiver: "u-fca8a4e9-1ba7-4e94-8fa5-fc2a934c",
-			Title:    "Ok",
-			Content:  message,
-			URL:      "https://github.com/henson/Scraper",
-			Priority: "0", //优先级：0 普通，1 紧急
-		}
+		//暂停发送通知，改打印通知内容
+		println(message)
+		/*
+			alert := Alert{
+				Source:   "s-4e12c729-0a0c-4491-bd1a-107de60e",
+				Receiver: "u-fca8a4e9-1ba7-4e94-8fa5-fc2a934c",
+				Title:    "Ok",
+				Content:  message,
+				URL:      "https://github.com/henson/Scraper",
+				Priority: "0", //优先级：0 普通，1 紧急
+			}
 
-		alert.SendAlert()
-
-		time.Sleep(time.Duration(24) * time.Hour)
+			alert.SendAlert()
+		*/
+		//waiting for nextday
+		NowStamp, _ := time.ParseInLocation("2006-01-02", tempDate, time.Local)
+		time.Sleep(time.Until(NowStamp.AddDate(0, 0, 1)))
 	}
 }
 
-//collectDocs
+// collectDocs
 func collectDocs() (ok bool, err error) {
 	today := time.Now()
 	lastMonth := today.AddDate(0, -1, 0)
@@ -152,7 +157,7 @@ func collectDocs() (ok bool, err error) {
 	return true, nil
 }
 
-//listDir
+// listDir
 func listDir(dirPth string, suffix string) (files []string, err error) {
 	files = make([]string, 0, 10)
 	dir, err := ioutil.ReadDir(dirPth)
@@ -171,7 +176,7 @@ func listDir(dirPth string, suffix string) (files []string, err error) {
 	return files, nil
 }
 
-//interface to string
+// interface to string
 func interface2string(inter interface{}) string {
 	var tempStr string
 	switch inter.(type) {
@@ -205,7 +210,9 @@ func writeMarkDown(fileName, content string) {
 	}()
 	// make a write buffer
 	w := bufio.NewWriter(fo)
-	w.WriteString(content)
+	if _, err := w.WriteString(content); err != nil {
+		println(err.Error())
+	}
 	w.Flush()
 }
 
@@ -236,7 +243,7 @@ func scrape(jobs chan string, backs chan<- string) {
 			url := "https://github.com/" + title
 			var stars = "0"
 			var forks = "0"
-			s.Find("a.muted-link.mr-3").Each(func(i int, contentSelection *goquery.Selection) {
+			s.Find("a.Link--muted.d-inline-block.mr-3").Each(func(i int, contentSelection *goquery.Selection) {
 				if temp, ok := contentSelection.Find("svg").Attr("aria-label"); ok {
 					switch temp {
 					case "star":
